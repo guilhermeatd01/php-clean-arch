@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+
+    app:
+        build: .
+        container_name: cleanarch-app
+        volumes:
+            - .:/var/www
+            - ./.docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./.docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        networks:
+            - app-network
+        depends_on:
+            - db
+            - redis
+
+    nginx:
+        build: .docker/nginx
+        container_name: cleanarch-nginx
+        restart: always
+        tty: true
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+        networks:
+            - app-network
+        depends_on:
+            - app
+
+    db:
+        build: ./.docker/mysql
+        container_name: cleanarch-db
+        restart: always
+        tty: true
+        ports:
+            - "33006:3306"
+        volumes:
+            - ./.docker/dbdata:/var/lib/mysql
+            - ./.docker/mysql:/docker-entrypoint-initdb.d
+        environment:
+            - MYSQL_DATABASE=cleanarch
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=admin@123
+        networks:
+            - app-network
+
+    redis:
+        image: redis:alpine
+        container_name: cleanarch-redis
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

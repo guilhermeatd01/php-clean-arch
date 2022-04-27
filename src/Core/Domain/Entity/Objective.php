@@ -3,11 +3,11 @@
 namespace Core\Domain\Entity;
 
 use Core\Domain\Entity;
-use Ramsey\Uuid\Uuid;
+use Core\Domain\ValueObject\Uuid;
 
 class Objective extends Entity
 {
-    protected ?string $id;
+    protected ?Uuid $id;
     protected string $title;
     protected string $description;
     protected ?string $owner;
@@ -26,7 +26,7 @@ class Objective extends Entity
         ?string $period,
         array $keyResults
     ) {
-        $this->id = $id ?? Uuid::uuid4()->toString();
+        $this->id = $id ? Uuid::createFromString($id) : Uuid::random();
         $this->title = $title;
         $this->description = $description;
         $this->owner = $owner;

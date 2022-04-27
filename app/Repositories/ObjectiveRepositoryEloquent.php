@@ -24,13 +24,15 @@ class ObjectiveRepositoryEloquent implements ObjectiveRepositoryInterface
             $objective->owner,
             $objective->type,
             $objective->status,
-            $objective->period
+            $objective->period,
+            []
         );
     }
 
     public function store(Objective $entity): Objective
     {
         try {
+            $entity = $entity;
             $objective = $this->objectiveModel->create([
                 'id' => $entity->id,
                 'title' => $entity->title,

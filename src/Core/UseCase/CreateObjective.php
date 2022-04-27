@@ -32,7 +32,7 @@ class CreateObjective
         $this->objectiveRepository->store($objective);
 
         return new ObjectiveOutputDTO(
-            $objective->id,
+            $objective->id(),
             $objective->title,
             $objective->description,
             $objective->owner,

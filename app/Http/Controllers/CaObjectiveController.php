@@ -27,13 +27,11 @@ class CaObjectiveController extends Controller
             $request->input('type'),
             $request->input('status'),
             $request->input('period'),
-            $request->input('keyResults')
+            $request->input('key_results', [])
         );
 
         $outputDto = $useCase->execute($inputDto);
 
-        return (new CreateObjectiveResource($outputDto))
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+        return response()->json($outputDto, Response::HTTP_CREATED);
     }
 }

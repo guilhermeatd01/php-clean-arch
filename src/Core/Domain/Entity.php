@@ -13,4 +13,9 @@ class Entity
         $className = get_class($this);
         throw new \Exception("Property $name not found in class $className");
     }
+
+    public function id(): string
+    {
+        return (string) $this->id;
+    }
 }
